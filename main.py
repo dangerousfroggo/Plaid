@@ -3,10 +3,14 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import googlemaps
 import pandas as pd  
 from pprint import pprint
-import openai
+from openai import OpenAI
 import os
-app = Flask(__name__)
+from flask_wtf import FlaskForm, CSRFProtect
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired, Length
 
+app = Flask(__name__)
+csrf = CSRFProtect(app)
 
 @app.route('/')
 def index():
@@ -14,19 +18,22 @@ def index():
 @app.route('/planner')
 def planner():
     return render_template('planner.html')
+    
+@app.route('/suggestions')
+def suggestions():
+    return render_template('suggestions.html')
+
 
 
 
 GmapsApiKey = "AIzaSyDFP1V6wDl-Faua2ljubPUsTPNrOuJGwEk"
 openAiApiKey = my_secret = os.environ['openAiKey']
 
-
+client = OpenAI(api_key = openAiApiKey)
 mapClient = googlemaps.Client(GmapsApiKey)
 
 
 
-#testResponse = mapClient.geocode(testAddress)
-#locationRadiusResult = mapClient.places_nearby(location = '43.95197153319961, -79.45002830396922', radius = 10000, open_now = False, type = 'restaurant')
 
 
 #class definition for a generic user class. Will be used to store user info when a user is created
@@ -72,11 +79,15 @@ def createPlaceTypeIdeas(user):
 
 
 
-def locationSearch(userLocation, userRadius, placeType, keyWords):
-  response = mapClient.places_nearby(location = userLocation, radius = userRadius, open_now = False, type = placeType, keyword = keyWords)
-  return response
-
-
+def locationSearch(_location, _radius, _placeType, _priceLevel):
+  
+  return mapClient.places_nearby(
+    location = _location,
+    radius = _radius,
+    type = _placeType,
+    price_level = _priceLevel
+  )
+ 
 johnDoe = User(
   name = 'John',
   lastName = 'Doe',
@@ -99,3 +110,5 @@ def parseGmapsApiResponse(response):
   for place in response['results']:
     places.append[place['name'], place['vicinity'], place['place_id']]
   return places
+
+print(createPlaceTypeIdeas(johnDoe))
