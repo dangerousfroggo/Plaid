@@ -27,8 +27,8 @@ def suggestions():
 
 
 
-GmapsApiKey = "AIzaSyDFP1V6wDl-Faua2ljubPUsTPNrOuJGwEk"
-openAiApiKey = os.environ["openAiApiKey"]
+GmapsApiKey = os.environ['gmapsApiKey']
+openAiApiKey = os.environ['openAiApiKey']
 
 client = OpenAI(api_key = openAiApiKey)
 mapClient = googlemaps.Client(GmapsApiKey)
@@ -111,5 +111,9 @@ def parseGmapsApiResponse(response):
   for place in response['results']:
     places.append[place['name'], place['vicinity'], place['place_id']]
   return places
+
+def possiblePlaces(address):
+  return mapClient.places_nearby(location = [43.6532, -79.3843], radius = 10000)
+print(possiblePlaces("51 Duning Ave, Aurora, ON, L4G 0A1"))
 
 print(createPlaceTypeIdeas(johnDoe))
