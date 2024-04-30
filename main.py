@@ -28,7 +28,7 @@ def suggestions():
 
 
 GmapsApiKey = "AIzaSyDFP1V6wDl-Faua2ljubPUsTPNrOuJGwEk"
-openAiApiKey = "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"
+openAiApiKey = os.environ["openAiApiKey"]
 
 client = OpenAI(api_key = openAiApiKey)
 mapClient = googlemaps.Client(GmapsApiKey)
