@@ -1,3 +1,4 @@
+import flask
 from flask import Flask, render_template, request, redirect, url_for, session
 
 import googlemaps
@@ -27,7 +28,7 @@ def suggestions():
 
 
 GmapsApiKey = "AIzaSyDFP1V6wDl-Faua2ljubPUsTPNrOuJGwEk"
-openAiApiKey = my_secret = os.environ['openAiKey']
+openAiApiKey = "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"
 
 client = OpenAI(api_key = openAiApiKey)
 mapClient = googlemaps.Client(GmapsApiKey)
