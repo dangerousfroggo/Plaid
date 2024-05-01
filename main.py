@@ -6,6 +6,7 @@ import pandas as pd
 from pprint import pprint
 from openai import OpenAI
 import os
+import math
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
@@ -13,6 +14,7 @@ from wtforms.validators import DataRequired, Length
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 
+#app routing
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -25,19 +27,19 @@ def suggestions():
     return render_template('suggestions.html')
 
 
+#imports api keys as environment variables
 
-
-GmapsApiKey = os.environ['gmapsApiKey']
+gmapsApiKey = os.environ['gmapsApiKey']
 openAiApiKey = os.environ['openAiApiKey']
 
 client = OpenAI(api_key = openAiApiKey)
-mapClient = googlemaps.Client(GmapsApiKey)
+mapClient = googlemaps.Client(gmapsApiKey)
 
 
 
 
 
-#class definition for a generic user class. Will be used to store user info when a user is created
+
 #class definition for a generic user class. Will be used to store user info when a user is created
 class User:
   def __init__(self, name, lastName, email, phoneNumber, address, city, password, currentRadius, preferences, activities, budget):
@@ -60,27 +62,32 @@ class User:
 #openai api call function
 #calls the openai api, takes in a prompt, api key
 #returns the unparsed completion result
-def call_openai(prompt, api_key):
+def chatGpt_call_openai(prompt, api_key):
   completion = client.chat.completions.create( 
     model = 'gpt-3.5-turbo',
     messages = [ 
-      {'role': 'user', 'content': prompt}
+      {'role': 'user',
+      'content': prompt}
     ],
     temperature = 0  
   )
   return completion.choices[0].message.content
 
-def createPlaceTypeIdeas(user):
+#creates a list of place_types compatible with gmaps api from a list of words (calls gpt)
+#takes in a user object
+#returns list of place_types
+
+def chatGpt_createPlaceTypesFromUser(user):
   prompt = (
       f"You are assisting in an app. Given a user's preferences and budget, "
       f"return a list of googlemaps API place types that fit the requirements. Return only an array, with no newlines or other text."
       f"The user's preferred activities are {user.activities}. The user's budget is {user.budget}."
   )
-  return call_openai(prompt, openAiApiKey)
+  return chatGpt_call_openai(prompt, openAiApiKey)
 
 
 
-def locationSearch(_location, _radius, _placeType, _priceLevel):
+def gMaps_locationSearch(_location, _radius, _placeType, _priceLevel):
   
   return mapClient.places_nearby(
     location = _location,
@@ -111,9 +118,26 @@ def parseGmapsApiResponse(response):
   for place in response['results']:
     places.append[place['name'], place['vicinity'], place['place_id']]
   return places
+def addressToCoordinates(address):
+    return [mapClient.geocode(address)[0]['geometry']['location'].get('lat'), 
+    mapClient.geocode(address)[0]['geometry']['location'].get('lng')]
 
-def possiblePlaces(address):
+def gMaps_createListOfSuitablePlaces(address,radius, placetypes, budget):
+    coordinates = addressToCoordinates(address)
+    return gMaps_locationSearch(coordinates, radius, placetypes, budget)
+
+def gMaps_possiblePlaces(address):
   return mapClient.places_nearby(location = [43.6532, -79.3843], radius = 10000)
-print(possiblePlaces("51 Duning Ave, Aurora, ON, L4G 0A1"))
+print(gMaps_possiblePlaces("51 Duning Ave, Aurora, ON, L4G 0A1"))
 
-print(createPlaceTypeIdeas(johnDoe))
+def createSpecificBudget(budget):
+  if budget > 1000:
+     result = 3
+  else:
+    result = math.log(10, budget)
+
+
+
+print(addressToCoordinates(johnDoe.address))
+print(chatGpt_createPlaceTypesFromUser(johnDoe))
+
