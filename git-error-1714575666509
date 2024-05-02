@@ -1,0 +1,27 @@
+> git push origin main:main
+remote: error: GH013: Repository rule violations found for refs/heads/main.        
+remote: 
+remote: - GITHUB PUSH PROTECTION        
+remote:   —————————————————————————————————————————        
+remote:     Resolve the following violations before pushing again        
+remote: 
+remote:     - Push cannot contain secrets        
+remote: 
+remote:             
+remote:      (?) Learn how to resolve a blocked push        
+remote:      https://docs.github.com/code-security/secret-scanning/pushing-a-branch-blocked-by-push-protection        
+remote:             
+remote:             
+remote:       —— OpenAI API Key ————————————————————————————————————        
+remote:        locations:        
+remote:          - commit: fd0f7587391fc8b2424db85c8d697665ee8b4999        
+remote:            path: .vscode/launch.json:15        
+remote:             
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.        
+remote:        https://github.com/dangerousfroggo/planMyDay/security/secret-scanning/unblock-secret/2fs2raRYhMgv2RETEWw1wiQnQBy        
+remote:             
+remote: 
+remote: 
+To https://github.com/dangerousfroggo/planMyDay.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/dangerousfroggo/planMyDay.git'

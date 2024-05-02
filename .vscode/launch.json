@@ -12,8 +12,8 @@
             "env": {
                 "FLASK_APP": "main.py",
                 "FLASK_DEBUG": "1",
-                "openAiApiKey": "sk-proj-QoV8eEYiMgEQXZHbmAmiT3BlbkFJdxaz3KdbtlTmiQ00WsqR",
-                "gmapsApiKey": "AIzaSyDFP1V6wDl-Faua2ljubPUsTPNrOuJGwEk"
+                "openAiApiKey": "testVal",
+                "gmapsApiKey": "testVal"
                 
             },
             "args": [
