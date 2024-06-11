@@ -1,49 +1,43 @@
-
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-  <title>plaid</title>
+  <title>Plaid - Plan Your Day Out</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <style>
-    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    /* Custom styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa; /* Light gray background */
+    }
     .navbar {
-      margin-bottom: 30;
+      margin-bottom: 0;
       border-radius: 0;
+      background-color: #343a40; /* Dark navbar */
     }
-
-    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 450px}
-
-    /* Set gray background color and 100% height */
-    .sidenav {
-      padding-top: 20px;
-      background-color: #f1f1f1;
-      height: 100%;
+    .navbar-inverse .navbar-nav > li > a {
+      color: #ffffff; /* Navbar link color */
     }
-
-    /* Set black background color, white text and some padding */
+    .navbar-inverse .navbar-nav > li > a:hover,
+    .navbar-inverse .navbar-nav > li > a:focus {
+      color: #b8c2cc; /* Navbar link hover color */
+    }
     footer {
-      background-color: #555;
-      color: white;
+      background-color: #343a40;
+      color: #ffffff;
       padding: 15px;
-    }
-
-    /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height:auto;} 
+      position: fixed;
+      bottom: 0;
+      width: 100%;
     }
   </style>
 </head>
+<body>
 
+  <!-- Navbar -->
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -52,59 +46,71 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>                        
         </button>
-        <a class="navbar-brand">
-          <img src = "{{url_for('static', filename = 'plaidLogo.png')}}" alt = "Plaid Logo" width = "48" height = "48">
-        </a>
-
-
-
+        <a class="navbar-brand" href="#">Plaid</a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li><a href="/">Home </a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="/planner">Plan a Day Out!</a></li>
-
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          
+          <!-- Add any right-aligned links here -->
         </ul>
       </div>
     </div>
   </nav>
 
-<form>    
-    <div class="container">
-      <h1>Enter your information below</h1>
-      <div class = "form-group">
-      <label for="exampleInputEmail1">
-        
-        Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-    
-    <div class="form-group">
-      <label for="exampleInputPassword1">Your name</label>
-      <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Your name">
-    
-      <label for="exampleInputEmail1">
-        Location</label>
-      <input type="text" class="form-control" id="location"  placeholder="Enter location">
-    </div>
-      
-    
-    <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-   
-      
-
-      <label class="form-check-label" for="exampleCheck1">alr bet hmu</label>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
+  <!-- Form -->
+  <div class="container">
+    <h1>Enter Your Information Below</h1>
+    <form action="/presenter">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email Address</label>
+        <input type="email" class="form-control" name="email-input" id="exampleInputEmail1" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Your Name</label>
+        <input type="text" class="form-control" name="name-input" id="exampleInputPassword1" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" class="form-control" name="address-input" id="location" placeholder="Enter location">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Tell Us a Little About What You Enjoy</label>
+        <input type="text" class="form-control" name="activities-input" id="exampleInputPassword1" placeholder="You can use sentences or words separated by commas">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">How Far Are You Able to Travel?</label>
+        <input type="text" class="form-control" name="range-input" id="location" placeholder="Enter a radius in km">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">What Is Your Budget (CAD)</label>
+        <input type="text" class="form-control" name="budget-input" id="exampleInputPassword1" placeholder="Enter budget in CAD">
+      </div>
+      <div class="form-group">
+        <label>How Would You Like to Travel?</label><br>
+        <input type="radio" id="drive" name="transportation" value="drive">
+        <label for="drive">Drive</label><br>
+        <input type="radio" id="walk" name="transportation" value="walk">
+        <label for="walk">Walk</label><br>
+        <input type="radio" id="bike" name="transportation" value="bike">
+        <label for="bike">Bike</label><br>
+        <input type="radio" id="public-transit" name="transportation" value="public-transit">
+        <label for="public-transit">Public Transit</label><br><br>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <div class="section">
+      <!-- Spacer -->
+      <div style="margin-bottom: 100px;"></div>
+    </div>
   </div>
-</form>
 
-  
+  <!-- Footer -->
+  <footer class="container-fluid text-center">
+    <p>Footer Text</p>
+  </footer>
+
+</body>
+</html>

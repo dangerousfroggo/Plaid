@@ -1,102 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+   
 <head>
-  <title>plaid</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
-    /* Remove the navbar's default margin-bottom and rounded borders */ 
-    .navbar {
-      margin-bottom: 80;
-      border-radius: 10;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan a day out!</title>
+    <!-- Include CSRF token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 450px}
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    /* Set gray background color and 100% height */
-    .sidenav {
-      padding-top: 40px;
-      background-color: #f1f1f1;
-      height: 120%;
-    }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height:auto;} 
-    }
-  </style>
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #a51a84;
+        }
+    </style>
 </head>
 <body>
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-large">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand">
-        <img src = "{{url_for('static', filename = 'plaidLogo.png')}}" alt = "Plaid Logo" style="vertical-align:top" width = "48" height = "48" >
-      </a>
-
-
-      
+    <div class="container">
+        <h1>Plan a day out!</h1>
+        <!-- Add CSRF token to form -->
+        <form action="/register" method="post">
+            <!-- Include CSRF token field -->
+            <input type="hidden" name="csrf_token"  value="{{ csrf_token() }}">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder = "Choose a cool username!" required>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" placeholder = "Your location (doesn't get stored or shared)" required>
+            <label for="radius">Radius:</label>
+            <input type="number" id="radius" name="radius"  placeholder = "How far are you willing to travel?" required>
+            <label for="hobbies">Hobbies:</label>
+            <input type="text" id="hobbies" name="hobbies"  placeholder = "What do you like to do?" required>
+            <label for="preferences">Preferences:</label>
+            <input type="text" id="preferences" placeholder = "For example, Italian Food or Indoor Settings"  name="preferences" required>
+            <label for="budget">Budget:</label>
+            <select id="budget" name="budget" required>
+                <option value="20">$20</option>
+                <option value="50">$50</option>
+                <option value="100">$100</option>
+                <option value="more">More than $100</option>
+            </select>
+            <label for="outing_type">Outing Type:</label>
+            <select id="outing_type" name="outing_type" required>
+                <option value="date">Date</option>
+                <option value="social_gathering">Social Gathering</option>
+            </select>
+            <button type="submit">Register</button>
+        </form>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/index">Home</a></li>
-        <li><a href="/planner">Plan a Day Out!</a></li>
-        
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<div class="container-fluid text-center">    
-  <div class="row content">
-    <div class="col-sm-2 sidenav">
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
-      <p><a href="#">Link</a></p>
-    </div>
-    <div class="col-sm-8 text-center"> 
-      <h1>PLAID</h1>
-      
-    </div>
-    
-    <div class="col-sm-2 sidenav">
-      <div class="well">
-        <p>ADS</p>
-      </div>
-      <div class="well">
-        <p>ADS</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer class="container-fluid text-center">
-  <p>Footer Text</p>
-</footer>
-
 </body>
 </html>
