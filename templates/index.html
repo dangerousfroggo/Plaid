@@ -40,7 +40,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan a day out!</title>
-    <!-- Include CSRF token -->
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         body {
@@ -103,9 +103,9 @@
 <body>
     <div class="container">
         <h1>Plan a day out!</h1>
-        <!-- Add CSRF token to form -->
+       
         <form action="/register" method="post">
-            <!-- Include CSRF token field -->
+            
             <input type="hidden" name="csrf_token"  value="{{ csrf_token() }}">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" placeholder = "Choose a cool username!" required>

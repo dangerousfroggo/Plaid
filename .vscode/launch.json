@@ -12,8 +12,8 @@
             "env": {
                 "FLASK_APP": "main.py",
                 "FLASK_DEBUG": "1",
-                "openAiApiKey": "ur key",
-                "gmapsApiKey": "ur key"
+                "openAiApiKey": "urkey",
+                "gMapsApiKey": "anotherkey"
                 
             },
             "args": [

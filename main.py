@@ -23,7 +23,7 @@ def addressToCoordinates(address):
         print(f"==Error in geocoding: {e}")
         return None
 
-# Class definition for a generic user class. Will be used to store user info when a user is created
+# Class definition for a generic user obj. Will be used to store user info when a user is created
 class User:
     def __init__(self, username, address, radius, hobbies, preferences, budget, outing_type, placetypes=[]):
         self.username = username
@@ -34,7 +34,8 @@ class User:
         self.budget = budget
         self.outing_type = outing_type  
         self.placetypes = placetypes
-
+#coordinates method, converts "natural" language text to coordinates (uses google's autocomplete algorithm, somewhat wonky)
+#takes a string as natural language, returns dict of coordinates
     def coordinates(self):
         geocodeResult = mapClient.geocode(self.address)
         if geocodeResult:
@@ -43,9 +44,9 @@ class User:
             longitude = location['lng']
             return (latitude, longitude)
         else:
-            print("==Invalid location specified. User not created.")
+            print("==invalid location specified, user not created")
             return None
-
+#Class definition for suggestedplace obj
 class SuggestedPlace:
     def __init__(self, name, location, placetype, rating, image):
         self.name = name
@@ -54,6 +55,7 @@ class SuggestedPlace:
         self.rating = rating
         self.image = image
 
+#overrides string representation of object, used for printing
     def __str__(self):
         return f"Name: {self.name}, Location: {self.location}, Placetype: {self.placetype}, Rating: {self.rating}, Image: {self.image}"
 
@@ -66,7 +68,7 @@ def chatGpt_call_openai(prompt, api_key):
         ],
         temperature = 0  
     )
-    return eval(completion.choices[0].message.content)
+    return eval(completion.choices[0].message.content)      #to do: input should be sanitized (security)
 
 # Creates a list of place_types compatible with gmaps API from a list of words (calls GPT)
 def chatGpt_createPlaceTypesFromUser(user):
@@ -80,6 +82,9 @@ def chatGpt_createPlaceTypesFromUser(user):
     print("==User placetypes fetched successfully: ", user.placetypes)
     return user.placetypes
 
+#alternative to gmaps_getSuitablePlacesFromUser function. Sometimes provides better accuracy. needs more testing, not currently used
+#takes coordinates, placetypes and radius
+#returns places list
 def find_places(lat, lng, types, radius=2000):
     all_places = []
     for place_type in types:
@@ -100,11 +105,14 @@ def find_places(lat, lng, types, radius=2000):
             print(f"Error in fetching nearby places of type {place_type}: {places_data['status']}")
     return all_places
 
+#generate suitable places from a user object, calls gmaps api
+#converts $$budget into price level
+#fetches photos
 def gMaps_getSuitablePlacesFromUser(user):
-    # Generate place types from user's preferences
+    #get keywords from user object
     placetypes = chatGpt_createPlaceTypesFromUser(user)  
     places = []
-
+    #convert $$ budget to gmaps pricelevel
     budget = user.budget
     if budget == "20":
         min_price = 0
@@ -134,14 +142,14 @@ def gMaps_getSuitablePlacesFromUser(user):
 
         for place in parsed_results:
             if place['name']:
-                # Get the photo reference link
+                # get photo ref link
                 if place.get('photo'):
                     photo_reference = place.get('photo', {}).get('photo_reference')
                     photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={gmapsApiKey}"
                 else:
                     photo_reference = None
                     photo_url = None
-                # Create a new instance of SuggestedPlace
+                # create a new instance of suggestedPlace
                 new_place = SuggestedPlace(
                     name=place['name'],
                     location=place['location'],
@@ -252,6 +260,7 @@ def presenter():
     if not selected_places:
         return redirect('/success')
     return render_template('presenter.html', selected_places=selected_places)
-# Run the Flask app
+
+
 if __name__ == '__main__':
     app.run(debug=True)
