@@ -1,3 +1,7 @@
-flask-based web app  
+Plaid:
+
+flask-based web application
+
 uses several services and apis, such as gmaps, google cloud api, openaiapi  
-takes user info, plans a day-out and creates a route
+
+an app designed to combat boredom. Given basic information, plans the perfect date/day out and shows a google maps route.
