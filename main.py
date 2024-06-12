@@ -5,7 +5,7 @@ app.config['SECRET_KEY'] = 'test_secret_key'
 csrf = CSRFProtect(app)
 
 # Import API keys as environment variables
-gmapsApiKey = "AIzaSyDuFOYPcjJm8bCyqdnzULtGXcKv08BMd4c"
+gmapsApiKey = os.environ['gMapsApiKey']
 openAiApiKey = os.environ["openAiApiKey"]
 client = OpenAI(api_key=openAiApiKey)
 mapClient = googlemaps.Client(gmapsApiKey)
