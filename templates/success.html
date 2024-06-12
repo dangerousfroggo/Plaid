@@ -7,18 +7,21 @@
 </head>
 <body>
     <h1>Suggested Places</h1>
-    <ul>
-        {% for place in suggested_places %}
-        <li>
-            <h2>{{ place.name }}</h2>
-            <p>Location: {{ place.location }}</p>
-            <p>Place Type: {{ place.placetype }}</p>
-            <p>Rating: {{ place.rating }}</p>
-            <img src="{{ place.image }}" alt="Place Image">
-        </li>
-        {% endfor %}
-    </ul>
+    <form action="/selection" method="POST">
+        <ul>
+            {% for place in suggested_places %}
+            <li>
+                <h2>{{ place.name }}</h2>
+                <p>Location: {{ place.location }}</p>
+                <p>Place Type: {{ place.placetype }}</p>
+                <p>Rating: {{ place.rating }}</p>
+                <img src="{{ place.image }}" alt="Place Image">
+                <label for="{{ place.name }}">Select</label>
+                <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}">
+            </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Submit Selection</button>
+    </form>
 </body>
 </html>
-
-
